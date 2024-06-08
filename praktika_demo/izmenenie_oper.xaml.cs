@@ -16,8 +16,6 @@ namespace praktika_demo
             db = new praktika_vesnaEntities4();
             LoadZayvkaIDs(); 
         }
-
-    
         private void LoadZayvkaIDs()
         {
             try
