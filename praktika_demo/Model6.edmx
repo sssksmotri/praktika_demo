@@ -1,0 +1,662 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище praktika_vesnaModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="auth">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="commentID" />
+          </Key>
+          <Property Name="commentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="message" Type="ntext" />
+          <Property Name="masterID" Type="int" />
+          <Property Name="requestID" Type="int" />
+        </EntityType>
+        <EntityType Name="homeTechType">
+          <Key>
+            <PropertyRef Name="homeTechID" />
+          </Key>
+          <Property Name="homeTechID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="homeTechType" Type="nvarchar" MaxLength="255" />
+          <Property Name="homeTechModel" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="request">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="problemDescription" Type="ntext" />
+          <Property Name="completionDate" Type="date" />
+          <Property Name="repairParts" Type="ntext" />
+          <Property Name="startDate" Type="date" />
+          <Property Name="Typeid" Type="int" />
+        </EntityType>
+        <EntityType Name="request_client">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="requestID" Type="int" Nullable="false" />
+          <Property Name="clientID" Type="int" Nullable="false" />
+          <Property Name="masterID" Type="int" />
+        </EntityType>
+        <EntityType Name="request_homeTechType">
+          <Key>
+            <PropertyRef Name="homeTechID" />
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="homeTechID" Type="int" Nullable="false" />
+          <Property Name="requestID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="request_status">
+          <Key>
+            <PropertyRef Name="statusID" />
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="statusID" Type="int" Nullable="false" />
+          <Property Name="requestID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="statusID" />
+          </Key>
+          <Property Name="statusID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="statusDescription" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Name="type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fio" Type="nvarchar" MaxLength="255" />
+          <Property Name="phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="type_id" Type="int" />
+        </EntityType>
+        <Association Name="FK__auth__userID__74AE54BC">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="auth" Type="Self.auth" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="auth">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comments__master__00200768">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="comments" Type="Self.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="masterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comments__reques__01142BA1">
+          <End Role="request" Type="Self.request" Multiplicity="0..1" />
+          <End Role="comments" Type="Self.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__request_c__reque__7B5B524B">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="request_client" Type="Self.request_client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="request_client">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__request_h__homeT__6383C8BA">
+          <End Role="homeTechType" Type="Self.homeTechType" Multiplicity="1" />
+          <End Role="request_homeTechType" Type="Self.request_homeTechType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="homeTechType">
+              <PropertyRef Name="homeTechID" />
+            </Principal>
+            <Dependent Role="request_homeTechType">
+              <PropertyRef Name="homeTechID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__request_h__reque__6477ECF3">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="request_homeTechType" Type="Self.request_homeTechType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="request_homeTechType">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__request_s__reque__787EE5A0">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="request_status" Type="Self.request_status" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="request_status">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__request_s__statu__778AC167">
+          <End Role="status" Type="Self.status" Multiplicity="1" />
+          <End Role="request_status" Type="Self.request_status" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="status">
+              <PropertyRef Name="statusID" />
+            </Principal>
+            <Dependent Role="request_status">
+              <PropertyRef Name="statusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user__type_id__71D1E811">
+          <End Role="type" Type="Self.type" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type">
+              <PropertyRef Name="type_id" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_client_clientID">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="request_client" Type="Self.request_client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="request_client">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_client_masterID">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="request_client" Type="Self.request_client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="request_client">
+              <PropertyRef Name="masterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище praktika_vesnaModelContainer">
+          <EntitySet Name="auth" EntityType="Self.auth" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="comments" EntityType="Self.comments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="homeTechType" EntityType="Self.homeTechType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="request" EntityType="Self.request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="request_client" EntityType="Self.request_client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="request_homeTechType" EntityType="Self.request_homeTechType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="request_status" EntityType="Self.request_status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="status" EntityType="Self.status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="type" EntityType="Self.type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__auth__userID__74AE54BC" Association="Self.FK__auth__userID__74AE54BC">
+            <End Role="user" EntitySet="user" />
+            <End Role="auth" EntitySet="auth" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comments__master__00200768" Association="Self.FK__comments__master__00200768">
+            <End Role="user" EntitySet="user" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comments__reques__01142BA1" Association="Self.FK__comments__reques__01142BA1">
+            <End Role="request" EntitySet="request" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__request_c__reque__7B5B524B" Association="Self.FK__request_c__reque__7B5B524B">
+            <End Role="request" EntitySet="request" />
+            <End Role="request_client" EntitySet="request_client" />
+          </AssociationSet>
+          <AssociationSet Name="FK__request_h__homeT__6383C8BA" Association="Self.FK__request_h__homeT__6383C8BA">
+            <End Role="homeTechType" EntitySet="homeTechType" />
+            <End Role="request_homeTechType" EntitySet="request_homeTechType" />
+          </AssociationSet>
+          <AssociationSet Name="FK__request_h__reque__6477ECF3" Association="Self.FK__request_h__reque__6477ECF3">
+            <End Role="request" EntitySet="request" />
+            <End Role="request_homeTechType" EntitySet="request_homeTechType" />
+          </AssociationSet>
+          <AssociationSet Name="FK__request_s__reque__787EE5A0" Association="Self.FK__request_s__reque__787EE5A0">
+            <End Role="request" EntitySet="request" />
+            <End Role="request_status" EntitySet="request_status" />
+          </AssociationSet>
+          <AssociationSet Name="FK__request_s__statu__778AC167" Association="Self.FK__request_s__statu__778AC167">
+            <End Role="status" EntitySet="status" />
+            <End Role="request_status" EntitySet="request_status" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user__type_id__71D1E811" Association="Self.FK__user__type_id__71D1E811">
+            <End Role="type" EntitySet="type" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_client_clientID" Association="Self.FK_request_client_clientID">
+            <End Role="user" EntitySet="user" />
+            <End Role="request_client" EntitySet="request_client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_client_masterID" Association="Self.FK_request_client_masterID">
+            <End Role="user" EntitySet="user" />
+            <End Role="request_client" EntitySet="request_client" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="praktika_vesnaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="auth">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="user" Relationship="Self.FK__auth__userID__74AE54BC" FromRole="auth" ToRole="user" />
+        </EntityType>
+        <EntityType Name="comments">
+          <Key>
+            <PropertyRef Name="commentID" />
+          </Key>
+          <Property Name="commentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="masterID" Type="Int32" />
+          <Property Name="requestID" Type="Int32" />
+          <NavigationProperty Name="user" Relationship="Self.FK__comments__master__00200768" FromRole="comments" ToRole="user" />
+          <NavigationProperty Name="request" Relationship="Self.FK__comments__reques__01142BA1" FromRole="comments" ToRole="request" />
+        </EntityType>
+        <EntityType Name="homeTechType">
+          <Key>
+            <PropertyRef Name="homeTechID" />
+          </Key>
+          <Property Name="homeTechID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="homeTechType1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="homeTechModel" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="request" Relationship="Self.request_homeTechType" FromRole="homeTechType" ToRole="request" />
+        </EntityType>
+        <EntityType Name="request">
+          <Key>
+            <PropertyRef Name="requestID" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="problemDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="completionDate" Type="DateTime" Precision="0" />
+          <Property Name="repairParts" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="startDate" Type="DateTime" Precision="0" />
+          <Property Name="Typeid" Type="Int32" />
+          <NavigationProperty Name="comments" Relationship="Self.FK__comments__reques__01142BA1" FromRole="request" ToRole="comments" />
+          <NavigationProperty Name="request_client" Relationship="Self.FK__request_c__reque__7B5B524B" FromRole="request" ToRole="request_client" />
+          <NavigationProperty Name="homeTechType" Relationship="Self.request_homeTechType" FromRole="request" ToRole="homeTechType" />
+          <NavigationProperty Name="status" Relationship="Self.request_status" FromRole="request" ToRole="status" />
+        </EntityType>
+        <EntityType Name="request_client">
+          <Key>
+            <PropertyRef Name="requestID" />
+            <PropertyRef Name="clientID" />
+          </Key>
+          <Property Name="requestID" Type="Int32" Nullable="false" />
+          <Property Name="clientID" Type="Int32" Nullable="false" />
+          <Property Name="masterID" Type="Int32" />
+          <NavigationProperty Name="request" Relationship="Self.FK__request_c__reque__7B5B524B" FromRole="request_client" ToRole="request" />
+          <NavigationProperty Name="user" Relationship="Self.FK_request_client_clientID" FromRole="request_client" ToRole="user" />
+          <NavigationProperty Name="user1" Relationship="Self.FK_request_client_masterID" FromRole="request_client" ToRole="user" />
+        </EntityType>
+        <EntityType Name="status">
+          <Key>
+            <PropertyRef Name="statusID" />
+          </Key>
+          <Property Name="statusID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="statusDescription" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="request" Relationship="Self.request_status" FromRole="status" ToRole="request" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="type">
+          <Key>
+            <PropertyRef Name="type_id" />
+          </Key>
+          <Property Name="type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="user" Relationship="Self.FK__user__type_id__71D1E811" FromRole="type" ToRole="user" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="userID" />
+          </Key>
+          <Property Name="userID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fio" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="type_id" Type="Int32" />
+          <NavigationProperty Name="auth" Relationship="Self.FK__auth__userID__74AE54BC" FromRole="user" ToRole="auth" />
+          <NavigationProperty Name="comments" Relationship="Self.FK__comments__master__00200768" FromRole="user" ToRole="comments" />
+          <NavigationProperty Name="request_client" Relationship="Self.FK_request_client_clientID" FromRole="user" ToRole="request_client" />
+          <NavigationProperty Name="request_client1" Relationship="Self.FK_request_client_masterID" FromRole="user" ToRole="request_client" />
+          <NavigationProperty Name="type" Relationship="Self.FK__user__type_id__71D1E811" FromRole="user" ToRole="type" />
+        </EntityType>
+        <Association Name="FK__auth__userID__74AE54BC">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="auth" Type="Self.auth" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="auth">
+              <PropertyRef Name="userID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comments__master__00200768">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="comments" Type="Self.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="masterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__comments__reques__01142BA1">
+          <End Role="request" Type="Self.request" Multiplicity="0..1" />
+          <End Role="comments" Type="Self.comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="comments">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__request_c__reque__7B5B524B">
+          <End Role="request" Type="Self.request" Multiplicity="1" />
+          <End Role="request_client" Type="Self.request_client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="request">
+              <PropertyRef Name="requestID" />
+            </Principal>
+            <Dependent Role="request_client">
+              <PropertyRef Name="requestID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_client_clientID">
+          <End Role="user" Type="Self.user" Multiplicity="1" />
+          <End Role="request_client" Type="Self.request_client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="request_client">
+              <PropertyRef Name="clientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_request_client_masterID">
+          <End Role="user" Type="Self.user" Multiplicity="0..1" />
+          <End Role="request_client" Type="Self.request_client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="userID" />
+            </Principal>
+            <Dependent Role="request_client">
+              <PropertyRef Name="masterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__user__type_id__71D1E811">
+          <End Role="type" Type="Self.type" Multiplicity="0..1" />
+          <End Role="user" Type="Self.user" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="type">
+              <PropertyRef Name="type_id" />
+            </Principal>
+            <Dependent Role="user">
+              <PropertyRef Name="type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="request_homeTechType">
+          <End Role="homeTechType" Type="Self.homeTechType" Multiplicity="*" />
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+        </Association>
+        <Association Name="request_status">
+          <End Role="request" Type="Self.request" Multiplicity="*" />
+          <End Role="status" Type="Self.status" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="praktika_vesnaEntities4" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="auth" EntityType="Self.auth" />
+          <EntitySet Name="comments" EntityType="Self.comments" />
+          <EntitySet Name="homeTechType" EntityType="Self.homeTechType" />
+          <EntitySet Name="request" EntityType="Self.request" />
+          <EntitySet Name="request_client" EntityType="Self.request_client" />
+          <EntitySet Name="status" EntityType="Self.status" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="type" EntityType="Self.type" />
+          <EntitySet Name="user" EntityType="Self.user" />
+          <AssociationSet Name="FK__auth__userID__74AE54BC" Association="Self.FK__auth__userID__74AE54BC">
+            <End Role="user" EntitySet="user" />
+            <End Role="auth" EntitySet="auth" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comments__master__00200768" Association="Self.FK__comments__master__00200768">
+            <End Role="user" EntitySet="user" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__comments__reques__01142BA1" Association="Self.FK__comments__reques__01142BA1">
+            <End Role="request" EntitySet="request" />
+            <End Role="comments" EntitySet="comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__request_c__reque__7B5B524B" Association="Self.FK__request_c__reque__7B5B524B">
+            <End Role="request" EntitySet="request" />
+            <End Role="request_client" EntitySet="request_client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_client_clientID" Association="Self.FK_request_client_clientID">
+            <End Role="user" EntitySet="user" />
+            <End Role="request_client" EntitySet="request_client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_request_client_masterID" Association="Self.FK_request_client_masterID">
+            <End Role="user" EntitySet="user" />
+            <End Role="request_client" EntitySet="request_client" />
+          </AssociationSet>
+          <AssociationSet Name="FK__user__type_id__71D1E811" Association="Self.FK__user__type_id__71D1E811">
+            <End Role="type" EntitySet="type" />
+            <End Role="user" EntitySet="user" />
+          </AssociationSet>
+          <AssociationSet Name="request_homeTechType" Association="Self.request_homeTechType">
+            <End Role="homeTechType" EntitySet="homeTechType" />
+            <End Role="request" EntitySet="request" />
+          </AssociationSet>
+          <AssociationSet Name="request_status" Association="Self.request_status">
+            <End Role="request" EntitySet="request" />
+            <End Role="status" EntitySet="status" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище praktika_vesnaModelContainer" CdmEntityContainer="praktika_vesnaEntities4">
+          <EntitySetMapping Name="auth">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.auth">
+              <MappingFragment StoreEntitySet="auth">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="comments">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.comments">
+              <MappingFragment StoreEntitySet="comments">
+                <ScalarProperty Name="commentID" ColumnName="commentID" />
+                <ScalarProperty Name="message" ColumnName="message" />
+                <ScalarProperty Name="masterID" ColumnName="masterID" />
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="homeTechType">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.homeTechType">
+              <MappingFragment StoreEntitySet="homeTechType">
+                <ScalarProperty Name="homeTechID" ColumnName="homeTechID" />
+                <ScalarProperty Name="homeTechType1" ColumnName="homeTechType" />
+                <ScalarProperty Name="homeTechModel" ColumnName="homeTechModel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="request">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.request">
+              <MappingFragment StoreEntitySet="request">
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="problemDescription" ColumnName="problemDescription" />
+                <ScalarProperty Name="completionDate" ColumnName="completionDate" />
+                <ScalarProperty Name="repairParts" ColumnName="repairParts" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="Typeid" ColumnName="Typeid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="request_client">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.request_client">
+              <MappingFragment StoreEntitySet="request_client">
+                <ScalarProperty Name="requestID" ColumnName="requestID" />
+                <ScalarProperty Name="clientID" ColumnName="clientID" />
+                <ScalarProperty Name="masterID" ColumnName="masterID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="status">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.status">
+              <MappingFragment StoreEntitySet="status">
+                <ScalarProperty Name="statusID" ColumnName="statusID" />
+                <ScalarProperty Name="statusDescription" ColumnName="statusDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="type">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.type">
+              <MappingFragment StoreEntitySet="type">
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+                <ScalarProperty Name="type1" ColumnName="type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user">
+            <EntityTypeMapping TypeName="praktika_vesnaModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="userID" ColumnName="userID" />
+                <ScalarProperty Name="fio" ColumnName="fio" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="type_id" ColumnName="type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="request_homeTechType" TypeName="praktika_vesnaModel.request_homeTechType" StoreEntitySet="request_homeTechType">
+            <EndProperty Name="homeTechType">
+              <ScalarProperty Name="homeTechID" ColumnName="homeTechID" />
+            </EndProperty>
+            <EndProperty Name="request">
+              <ScalarProperty Name="requestID" ColumnName="requestID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="request_status" TypeName="praktika_vesnaModel.request_status" StoreEntitySet="request_status">
+            <EndProperty Name="request">
+              <ScalarProperty Name="requestID" ColumnName="requestID" />
+            </EndProperty>
+            <EndProperty Name="status">
+              <ScalarProperty Name="statusID" ColumnName="statusID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

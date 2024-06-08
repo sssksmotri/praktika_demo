@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="63ab47e3e7eb4ef6bbb38de1b13ddc52" Name="Diagram1">
+        <EntityTypeShape EntityType="praktika_vesnaModel.auth" Width="1.5" PointX="5.25" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.comments" Width="1.5" PointX="5.25" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.homeTechType" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.request" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.request_client" Width="1.5" PointX="5.25" PointY="6.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.status" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.type" Width="1.5" PointX="0.75" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="praktika_vesnaModel.user" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <AssociationConnector Association="praktika_vesnaModel.FK__auth__userID__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.FK__comments__master__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.FK__comments__reques__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.FK__request_c__reque__7B5B524B" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.FK_request_client_clientID" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.FK_request_client_masterID" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.FK__user__type_id__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.request_homeTechType" ManuallyRouted="false" />
+        <AssociationConnector Association="praktika_vesnaModel.request_status" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
